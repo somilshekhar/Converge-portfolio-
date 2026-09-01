@@ -118,13 +118,13 @@ export default function Team() {
                 {/* One-liner Pill */}
                 <div className="inline-block px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10">
                   <span className="font-mono text-[11px] font-semibold text-accent">
-                    "{member.oneLiner}"
+                    &ldquo;{member.oneLiner}&rdquo;
                   </span>
                 </div>
 
                 {/* Bio Paragraph */}
                 <p className="font-sans text-xs md:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed pt-2">
-                  "{member.bio}"
+                  &ldquo;{member.bio}&rdquo;
                 </p>
               </div>
             </div>

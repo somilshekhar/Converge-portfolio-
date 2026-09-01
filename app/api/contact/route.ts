@@ -105,10 +105,6 @@ export async function POST(req: NextRequest) {
     message: sanitize(message),
   };
 
-  const toAddress = process.env.CONTACT_TO_EMAIL || "hello@convergedigitals.com";
-  const fromAddress = process.env.CONTACT_FROM_EMAIL || "Converge Digital Portfolio <portfolio@resend.dev>";
-  const resendKey = process.env.CONTACT_RESEND_API_KEY;
-
   let delivered = false;
 
   try {

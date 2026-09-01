@@ -1,10 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export default function ClientMarquee() {
-  const prefersReduced = useReducedMotion();
   const clients = useMemo(
     () => [
       "OCEAN BLUE EDUCATION",
