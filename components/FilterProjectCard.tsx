@@ -15,29 +15,12 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [isIntersecting, setIsIntersecting] = useState(false);
 
-  // Viewport Intersection Observer
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsIntersecting(entry.isIntersecting);
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  // Slideshow cycle interval logic on hover / viewport
+  // Slideshow cycle interval logic on desktop hover
   useEffect(() => {
     if (!project.slides || project.slides.length === 0) return;
     const hasHover = typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
-    const shouldCycle = hasHover ? isHovered : isIntersecting;
-
-    if (!shouldCycle) {
+    if (!hasHover || !isHovered) {
       setCurrentSlide(0);
       return;
     }
@@ -47,29 +30,24 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
     }, 2200);
 
     return () => clearInterval(interval);
-  }, [project.slides, isHovered, isIntersecting]);
+  }, [project.slides, isHovered]);
 
-  // Video playback controller
+  // Video playback controller (desktop hover only)
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
     const hasHover = typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
-    if (hasHover) {
-      if (isHovered) {
-        video.play().catch(() => {});
-      } else {
-        video.pause();
-        video.currentTime = 0;
-      }
+    if (hasHover && isHovered) {
+      video.play().catch(() => {});
     } else {
-      if (isIntersecting) {
-        video.play().catch(() => {});
-      } else {
-        video.pause();
-      }
+      video.pause();
+      video.currentTime = 0;
     }
-  }, [isHovered, isIntersecting]);
+  }, [isHovered]);
+
+  const activeSlide = project.slides && project.slides.length > 0 ? project.slides[currentSlide] : null;
+  const isVideoSlide = activeSlide ? (activeSlide.toLowerCase().endsWith(".mp4") || activeSlide.toLowerCase().endsWith(".mov")) : false;
 
   return (
     <div
@@ -90,65 +68,39 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
       data-cursor-text="VIEW"
     >
       {/* Media Content */}
-      {project.slides && project.slides.length > 0 ? (
+      {activeSlide ? (
         <div className="w-full h-full relative bg-black flex items-center justify-center overflow-hidden">
-          {project.slides.map((slide, index) => {
-            const isVideoSlide =
-              slide.toLowerCase().endsWith(".mp4") || slide.toLowerCase().endsWith(".mov");
-            const isActive = index === currentSlide;
-
-            return (
-              <div
-                key={index}
-                className={`absolute inset-0 w-full h-full flex items-center justify-center transition-all duration-700 ease-in-out ${
-                  isActive ? "opacity-100 scale-100 z-10" : "opacity-0 scale-105 pointer-events-none z-0"
-                }`}
-              >
-                {isVideoSlide && isActive ? (
-                  <>
-                    <video
-                      src={slide}
-                      loop
-                      muted
-                      playsInline
-                      autoPlay
-                      aria-hidden="true"
-                      className="absolute inset-0 w-full h-full object-cover scale-150 blur-2xl opacity-30 pointer-events-none"
-                    />
-                    <video
-                      src={slide}
-                      loop
-                      muted
-                      playsInline
-                      autoPlay
-                      className="relative z-10 h-full aspect-[9/16] object-contain transition-transform duration-700 ease-out group-hover:scale-105"
-                    />
-                  </>
-                ) : !isVideoSlide ? (
-                  <>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={slide}
-                      alt=""
-                      aria-hidden="true"
-                      className="absolute inset-0 w-full h-full object-cover scale-125 blur-2xl opacity-30 pointer-events-none"
-                    />
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={slide}
-                      alt={`${project.title} slide ${index + 1}`}
-                      className="relative z-10 h-full w-auto object-contain transition-transform duration-700 ease-out group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  </>
-                ) : null}
-              </div>
-            );
-          })}
+          {/* Blurred backdrop image */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={project.image}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover scale-150 blur-2xl opacity-30 pointer-events-none"
+          />
+          {isVideoSlide ? (
+            <video
+              src={activeSlide}
+              loop
+              muted
+              playsInline
+              autoPlay
+              preload="none"
+              className="relative z-10 h-full aspect-[9/16] object-contain transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+          ) : (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={activeSlide}
+              alt={`${project.title} slide ${currentSlide + 1}`}
+              className="relative z-10 h-full w-auto object-contain transition-transform duration-700 ease-out group-hover:scale-105"
+              loading="lazy"
+            />
+          )}
         </div>
       ) : project.isReel && project.video ? (
         <div className="w-full h-full relative bg-black flex items-center justify-center overflow-hidden">
-          {/* Blurred backdrop */}
+          {/* Blurred backdrop image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={project.image}

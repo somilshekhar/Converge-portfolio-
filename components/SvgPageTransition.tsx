@@ -69,6 +69,9 @@ export function SvgPageTransitionProvider({ children }: { children: React.ReactN
         setIsOverlayVisible(false);
         setIsTransitioning(false);
         pendingNavigationRef.current = null;
+        document.body.style.overflow = "";
+        const lenis = (window as unknown as { __lenis?: { start: () => void } }).__lenis;
+        lenis?.start();
       },
     });
 

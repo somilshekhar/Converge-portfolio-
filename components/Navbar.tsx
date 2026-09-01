@@ -118,6 +118,9 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
   const handleNavClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
       setMobileMenuOpen(false);
+      document.body.style.overflow = "";
+      const lenisInstance = (window as unknown as { __lenis?: { start: () => void } }).__lenis;
+      lenisInstance?.start();
 
       if (href === "/") {
         if (pathname !== "/") {
