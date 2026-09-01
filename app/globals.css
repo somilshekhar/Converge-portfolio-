@@ -1,0 +1,547 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-color: #050507;
+  --bg-card: #0c0c10;
+  --bg-card-hover: #14141a;
+  --fg-color: #ffffff;
+  --fg-secondary: #d4d4d8;
+  --muted-color: #8a8a99;
+  --accent-color: #ff3b00;
+  --accent-hover: #ff5522;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(5, 5, 7, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --modal-bg: #08080c;
+  --font-display: var(--font-clash), 'Clash Display', sans-serif;
+  --font-sans: var(--font-manrope), 'Manrope', sans-serif;
+  --gradient-overlay-from: #0c0c10;
+  --gradient-overlay-via: rgba(12, 12, 16, 0.2);
+}
+
+html.dark {
+  --bg-color: #050507;
+  --bg-card: #0c0c10;
+  --bg-card-hover: #14141a;
+  --fg-color: #ffffff;
+  --fg-secondary: #d4d4d8;
+  --muted-color: #8a8a99;
+  --accent-color: #ff3b00;
+  --accent-hover: #ff5522;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(5, 5, 7, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --modal-bg: #08080c;
+  --gradient-overlay-from: #0c0c10;
+  --gradient-overlay-via: rgba(12, 12, 16, 0.2);
+}
+
+html.light {
+  --bg-color: #f7f8fa;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f3f6;
+  --fg-color: #000000;
+  --fg-secondary: #18181b;
+  --muted-color: #3f3f46;
+  --accent-color: #ea580c;
+  --accent-hover: #ff5522;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --modal-bg: #ffffff;
+  --gradient-overlay-from: #ffffff;
+  --gradient-overlay-via: rgba(255, 255, 255, 0.2);
+}
+
+/* Global Theme Transition Animation Effect */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    fill 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 300ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html {
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) var(--bg-color);
+  scroll-behavior: smooth;
+}
+
+html.light {
+  scrollbar-color: rgba(0, 0, 0, 0.2) #f7f8fa;
+}
+
+section[id] {
+  scroll-margin-top: 120px;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-display,
+.font-heading,
+h1 *,
+h2 *,
+h3 *,
+h4 *,
+h5 *,
+h6 *,
+.font-display *,
+.font-heading * {
+  font-family: var(--font-clash), 'Clash Display', sans-serif !important;
+}
+
+p,
+button,
+a,
+input,
+textarea,
+.font-sans,
+.font-subheading {
+  font-family: var(--font-sans);
+}
+
+/* Custom Selection */
+::selection {
+  background-color: var(--accent-color);
+  color: #ffffff;
+}
+
+/* Lenis smooth scroll styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Mask Reveal Utilities */
+.line-mask {
+  overflow: hidden;
+  display: block;
+}
+
+.line-mask-inner {
+  display: block;
+  transform: translateY(105%);
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.line-mask-inner.is-animating {
+  will-change: transform;
+}
+
+.line-mask-inner.is-visible {
+  transform: translateY(0%);
+}
+
+/* Glassmorphism & Noise textures */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-header {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-color: var(--glass-border);
+}
+
+/* Footer Curtain Reveal Container */
+.main-content-wrap {
+  position: relative;
+  z-index: 10;
+  background-color: var(--bg-color);
+  margin-bottom: 0px;
+}
+
+.curtain-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+}
+
+/* Focus Visible Accessibility Rings */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--accent-color) !important;
+  outline-offset: 3px !important;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .line-mask-inner {
+    transform: none !important;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* GPU-Accelerated Infinite Marquee Keyframes */
+@keyframes marqueeLeft {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes marqueeDoubleTrack {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-track {
+  animation: marqueeLeft 25s linear infinite !important;
+  will-change: transform;
+}
+
+.animate-testimonials-track {
+  display: flex !important;
+  width: max-content !important;
+  animation: marqueeDoubleTrack 45s linear infinite !important;
+  will-change: transform;
+}
+
+.marquee-pause-on-hover:hover .animate-marquee-track,
+.marquee-pause-on-hover:hover .animate-testimonials-track {
+  animation-play-state: paused;
+}
+
+/* =========================================================
+   LIGHT THEME ADAPTATION OVERRIDES (PURE BLACK & CONTRAST TYPOGRAPHY)
+   ========================================================= */
+
+/* Background surfaces in Light Mode */
+html.light .bg-\[\#050507\],
+html.light .bg-\[\#0A0A0C\],
+html.light .bg-\[\#0a0a0c\] {
+  background-color: #f7f8fa !important;
+}
+
+html.light .bg-\[\#0c0c10\],
+html.light .bg-\[\#0c0c0f\],
+html.light .bg-\[\#0a0a0d\],
+html.light .bg-\[\#0D0D10\],
+html.light .bg-\[\#101014\],
+html.light .bg-\[\#121215\],
+html.light .bg-\[\#121216\],
+html.light .bg-\[\#121218\] {
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+html.light .bg-\[\#08080c\],
+html.light .bg-\[\#101016\],
+html.light .bg-\[\#141418\] {
+  background-color: #f1f3f6 !important;
+}
+
+html.light .bg-\[\#0F0F12\],
+html.light .bg-\[\#1b1b20\] {
+  background-color: #eaecef !important;
+}
+
+/* Glass Panels & Headers in Light Mode */
+html.light .glass-header {
+  background: rgba(247, 248, 250, 0.88) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Headings in Light Mode (Pure Black) */
+html.light h1:not(.dark-bg-context *):not([class*="text-accent"]):not([class*="text-\[\#"]):not(.text-gradient-works):not(.text-gradient-fade),
+html.light h2:not(.dark-bg-context *):not([class*="text-accent"]):not([class*="text-\[\#"]):not(.text-gradient-works):not(.text-gradient-fade),
+html.light h3:not(.dark-bg-context *):not([class*="text-accent"]):not([class*="text-\[\#"]):not(.text-gradient-works):not(.text-gradient-fade),
+html.light h4:not(.dark-bg-context *):not([class*="text-accent"]):not([class*="text-\[\#"]):not(.text-gradient-works):not(.text-gradient-fade),
+html.light h5:not(.dark-bg-context *):not([class*="text-accent"]):not([class*="text-\[\#"]):not(.text-gradient-works):not(.text-gradient-fade),
+html.light h6:not(.dark-bg-context *):not([class*="text-accent"]):not([class*="text-\[\#"]):not(.text-gradient-works):not(.text-gradient-fade) {
+  color: #000000;
+}
+
+/* Default paragraph & text contrast in Light Mode */
+html.light p:not(.dark-bg-context *):not([class*="text-accent"]):not([class*="text-\[\#"]):not([class*="text-neutral-"]):not([class*="text-black"]):not([class*="text-white"]):not([class*="bg-accent"] *) {
+  color: #1f2937;
+}
+
+/* Border Adaptations in Light Mode */
+html.light .border-white\/5,
+html.light .border-white\/10,
+html.light .border-white\/15,
+html.light .border-white\/20,
+html.light .border-white\/25,
+html.light .border-white\/30 {
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Surface Tint Adaptations in Light Mode */
+html.light .bg-white\/5 {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .bg-white\/10 {
+  background-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+html.light .bg-white\/15,
+html.light .bg-white\/20 {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light .bg-white\/\[0\.02\],
+html.light .bg-white\/\[0\.03\],
+html.light .bg-white\/\[0\.04\],
+html.light .bg-white\/\[0\.06\] {
+  background-color: rgba(0, 0, 0, 0.025) !important;
+}
+
+html.light .divide-white\/5> :not([hidden])~ :not([hidden]),
+html.light .divide-white\/10> :not([hidden])~ :not([hidden]) {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Footer in Light Mode */
+html.light .curtain-footer {
+  background-color: #edeef2 !important;
+  border-top-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light .curtain-footer .text-white\/10 {
+  color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light .curtain-footer .text-white\/10:hover {
+  color: rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Form Inputs & Controls in Light Mode */
+html.light input,
+html.light textarea,
+html.light select {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  color: #000000 !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #4b5563 !important;
+}
+
+/* Maintain Accent Buttons with Pure White Text */
+html.light .bg-accent,
+html.light button.bg-accent,
+html.light a.bg-accent {
+  background-color: #ea580c !important;
+  color: #ffffff !important;
+}
+
+html.light .bg-accent *,
+html.light button.bg-accent *,
+html.light a.bg-accent * {
+  color: #ffffff !important;
+}
+
+/* Maintain Orange Brand Color & Badges */
+html.light .text-accent,
+html.light .text-\[\#EA580C\],
+html.light .text-\[\#ff3b00\] {
+  color: #ea580c !important;
+}
+
+html.light .border-accent,
+html.light .border-\[\#EA580C\],
+html.light .border-\[\#ff3b00\] {
+  border-color: #ea580c !important;
+}
+
+/* Modal and Drawer Surfaces in Light Mode */
+html.light #mobile-nav-drawer,
+html.light [role="dialog"] .bg-\[\#0c0c10\],
+html.light [role="dialog"] .bg-\[\#0c0c10\]\/95 {
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Fix for dark backgrounds in light theme (Media Cards, Video Players, Lightbox) */
+html.light .dark-bg-context,
+html.light .dark-bg-context.bg-\[\#0c0c10\],
+html.light .dark-bg-context.bg-\[\#050507\],
+html.light .dark-bg-context.bg-neutral-950 {
+  background-color: #0c0c10 !important;
+}
+
+html.light .dark-bg-context .text-white,
+html.light .dark-bg-context.text-white,
+html.light .dark-bg-context h1,
+html.light .dark-bg-context h2,
+html.light .dark-bg-context h3,
+html.light .dark-bg-context h4,
+html.light .dark-bg-context h5,
+html.light .dark-bg-context h6 {
+  color: #ffffff !important;
+}
+
+html.light .dark-bg-context .text-neutral-200,
+html.light .dark-bg-context.text-neutral-200 {
+  color: #e5e5e5 !important;
+}
+
+html.light .dark-bg-context .text-neutral-300,
+html.light .dark-bg-context.text-neutral-300 {
+  color: #d4d4d8 !important;
+}
+
+html.light .dark-bg-context .text-neutral-400,
+html.light .dark-bg-context.text-neutral-400 {
+  color: #a1a1aa !important;
+}
+
+html.light .dark-bg-context .text-neutral-500,
+html.light .dark-bg-context.text-neutral-500 {
+  color: #8a8a99 !important;
+}
+
+html.light .dark-bg-context .border-white\/5,
+html.light .dark-bg-context .border-white\/10,
+html.light .dark-bg-context .border-white\/15,
+html.light .dark-bg-context .border-white\/20,
+html.light .dark-bg-context .border-white\/25,
+html.light .dark-bg-context .border-white\/30 {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+html.light .dark-bg-context .bg-white\/5 {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.light .dark-bg-context .bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+html.light .dark-bg-context .bg-white\/20 {
+  background-color: rgba(255, 255, 255, 0.22) !important;
+}
+
+html.light .dark-bg-context .bg-black\/50,
+html.light .dark-bg-context .bg-black\/60,
+html.light .dark-bg-context .bg-black\/70,
+html.light .dark-bg-context .bg-black\/80,
+html.light .dark-bg-context .bg-black\/90,
+html.light .dark-bg-context .bg-black\/95 {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+/* Invert element colors in light mode (useful for white logos) */
+html.light .invert-in-light {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* Theme-aware fading text gradient */
+.text-gradient-fade {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #ffffff, #e5e5e5, #737373);
+}
+
+html.light .text-gradient-fade {
+  background-image: linear-gradient(to right, #09090b, #3f3f46, #71717a);
+}
+
+/* Theme-aware "WORKS." kinetic typography gradient */
+.text-gradient-works {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(135deg, #ff3b00 0%, #111115 45%, #52525b 100%);
+}
+
+html.dark .text-gradient-works {
+  background-image: linear-gradient(135deg, #ff3b00 0%, #ffffff 45%, #a1a1aa 100%);
+}
+
+/* Strictly disable custom cursor elements on mobile and tablet screens */
+@media (max-width: 1023px), (pointer: coarse), (hover: none) {
+  .custom-cursor,
+  .custom-cursor-dot {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}

@@ -1,0 +1,12 @@
+reviews:
+  profile: "chill"
+  request_changes_workflow: true
+  high_level_summary: true
+  path_instructions:
+    - path: "**/*.jsx"
+      instructions: "Flag any hardcoded API keys or secrets. Check components stay under 200 lines."
+    - path: "**/.env*"
+      instructions: "Never allow real secrets committed here - only .env.example should exist."
+  auto_review:
+    enabled: true
+    drafts: false
