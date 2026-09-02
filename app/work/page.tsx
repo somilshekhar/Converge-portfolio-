@@ -452,6 +452,23 @@ export default function WorkPage() {
           </div>
         )}
 
+        {/* UI/UX Creatives Client Reference Disclaimer (Below Load More) */}
+        {activeCategory === "UI/UX Creatives" && (
+          <div className="mt-12 p-5 sm:p-6 rounded-2xl bg-accent/10 border border-accent/30 dark:bg-accent/10 dark:border-accent/30 backdrop-blur-md flex items-start space-x-4 text-neutral-900 dark:text-white transition-all shadow-md max-w-4xl mx-auto">
+            <div className="p-2.5 rounded-xl bg-accent/20 text-accent flex-shrink-0 mt-0.5">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div className="space-y-1 text-xs sm:text-sm leading-relaxed">
+              <div className="font-mono text-accent text-[11px] uppercase tracking-wider font-bold">
+                CLIENT UI/UX CONCEPT &amp; BENCHMARK NOTICE
+              </div>
+              <p className="text-neutral-700 dark:text-neutral-300 font-sans">
+                The projects featured under UI/UX Creatives represent interactive design concepts, structural prototypes, and visual benchmark references engineered for client visual direction &amp; conceptual exploration.
+              </p>
+            </div>
+          </div>
+        )}
+
       </main>
 
       <CollaborateCTA onOpenContact={handleOpenContact} />

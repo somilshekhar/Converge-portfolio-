@@ -16,6 +16,18 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
+  // Compute live website screenshot URL for Website & UI/UX Creatives projects
+  const liveScreenshotUrl =
+    (project.category === "Website" || project.category === "UI/UX Creatives") && project.link && project.link.startsWith("http")
+      ? `https://s0.wp.com/mshots/v1/${encodeURIComponent(project.link)}?w=1200&h=900`
+      : project.image;
+
+  const [coverImage, setCoverImage] = useState(liveScreenshotUrl);
+
+  useEffect(() => {
+    setCoverImage(liveScreenshotUrl);
+  }, [liveScreenshotUrl]);
+
   // Slideshow cycle interval logic on desktop hover
   useEffect(() => {
     if (!project.slides || project.slides.length === 0) return;
@@ -73,9 +85,10 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
           {/* Blurred backdrop image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={project.image}
+            src={coverImage}
             alt=""
             aria-hidden="true"
+            onError={() => setCoverImage(project.image)}
             className="absolute inset-0 w-full h-full object-cover scale-150 blur-2xl opacity-30 pointer-events-none"
           />
           {isVideoSlide ? (
@@ -103,16 +116,17 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
           {/* Blurred backdrop image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={project.image}
+            src={coverImage}
             alt=""
             aria-hidden="true"
+            onError={() => setCoverImage(project.image)}
             className="absolute inset-0 w-full h-full object-cover scale-150 blur-2xl opacity-30 pointer-events-none"
           />
           {/* Sharp Reel video */}
           <video
             ref={videoRef}
             src={project.video}
-            poster={project.image}
+            poster={coverImage}
             loop
             muted
             playsInline
@@ -124,7 +138,7 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
         <video
           ref={videoRef}
           src={project.video}
-          poster={project.image}
+          poster={coverImage}
           loop
           muted
           playsInline
@@ -134,8 +148,9 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
       ) : (
         /* eslint-disable-next-line @next/next/no-img-element */
         <img
-          src={project.image}
+          src={coverImage}
           alt={project.title}
+          onError={() => setCoverImage(project.image)}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           loading="lazy"
         />

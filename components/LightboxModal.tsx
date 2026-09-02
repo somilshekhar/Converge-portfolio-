@@ -32,7 +32,11 @@ export default function LightboxModal({
     setCurrentIndex(initialIndex);
   }, [initialIndex, project]);
 
-  const slides = project?.slides || (project?.video ? [project.video] : project?.image ? [project.image] : []);
+  const liveCoverImage = ((project?.category === "Website" || project?.category === "UI/UX Creatives") && project?.link && project?.link.startsWith("http"))
+    ? `https://s0.wp.com/mshots/v1/${encodeURIComponent(project.link)}?w=1200&h=900`
+    : project?.image;
+
+  const slides = project?.slides || (project?.video ? [project.video] : liveCoverImage ? [liveCoverImage] : []);
   const currentSlide = slides[currentIndex] || "";
   const isVideo = currentSlide.toLowerCase().endsWith(".mp4") || currentSlide.toLowerCase().endsWith(".mov");
 
@@ -277,6 +281,20 @@ export default function LightboxModal({
               </button>
             </>
           )}
+          {/* Mobile Floating Glassmorphism Visit Website Button */}
+          {project.link && (project.category === "Website" || project.category === "UI/UX Creatives") && (
+            <div className="sm:hidden absolute bottom-12 left-1/2 -translate-x-1/2 z-[60]">
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2.5 px-7 py-3.5 rounded-full bg-black/80 backdrop-blur-2xl border border-white/30 hover:border-accent text-white shadow-2xl shadow-black/90 text-sm font-sans font-bold tracking-wider uppercase transition-all transform active:scale-95 whitespace-nowrap"
+              >
+                <span>Visit Website</span>
+                <ArrowUpRight className="w-4 h-4 text-accent" />
+              </a>
+            </div>
+          )}
         </div>
 
         {/* Bottom Slide Counter and Indicator Dots */}
@@ -313,7 +331,7 @@ export default function LightboxModal({
             </div>
           )}
 
-          {project.link && (
+          {project.link && project.category !== "Website" && project.category !== "UI/UX Creatives" && (
             <a
               href={project.link}
               target="_blank"
