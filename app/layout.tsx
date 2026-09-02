@@ -50,6 +50,7 @@ export const metadata: Metadata = {
     "Social Media Marketing",
     "Performance Ads",
     "AI Automation",
+    "UI/UX Creatives",
     "India Company",
   ],
   authors: [{ name: "Converge Digitals Team" }],
