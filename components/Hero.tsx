@@ -209,7 +209,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
 
       {/* Bottom Footer Indicator */}
       <div className="relative z-10 flex items-end justify-between border-t border-neutral-300 dark:border-white/10 pt-6 font-sans text-xs text-neutral-600 dark:text-neutral-400">
-        <div className="hidden md:flex items-center space-x-3">
+        <div className="flex items-center space-x-3 mx-auto md:mx-0">
           <span className="w-2 h-2 bg-accent rounded-full animate-ping" />
           <span className="font-semibold text-neutral-900 dark:text-white">BASED IN INDIA</span>
         </div>

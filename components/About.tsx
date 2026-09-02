@@ -34,7 +34,7 @@ export default function About({ onOpenContact }: AboutProps) {
 
   const selectedClients = [
     "Kunj Infrastructure",
-    "Enki",
+    "Velunor",
     "OceanBlue Eductaion",
     "Ahuja Career Institute",
     "STHEER",
