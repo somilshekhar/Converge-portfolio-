@@ -429,7 +429,7 @@ export default function WorkPage() {
                       }}
                       className="px-4 py-1.5 rounded-full border border-neutral-300 dark:border-white/15 bg-neutral-100 dark:bg-white/5 hover:bg-accent hover:border-accent text-neutral-900 dark:text-white hover:text-white font-sans text-xs font-medium uppercase tracking-wider transition-all shadow-sm"
                     >
-                      View Slides
+                      {project.video ? "View Video" : "View Post"}
                     </button>
                   </div>
                 </div>

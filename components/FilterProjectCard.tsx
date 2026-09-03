@@ -44,17 +44,21 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
     return () => clearInterval(interval);
   }, [project.slides, isHovered]);
 
-  // Video playback controller (desktop hover only)
+  // Video playback controller (desktop hover & mobile touch)
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
     const hasHover = typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
-    if (hasHover && isHovered) {
-      video.play().catch(() => {});
+    if (hasHover) {
+      if (isHovered) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
     } else {
-      video.pause();
-      video.currentTime = 0;
+      video.play().catch(() => {});
     }
   }, [isHovered]);
 
@@ -111,18 +115,17 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
             />
           )}
         </div>
-      ) : project.isReel && project.video ? (
+      ) : project.video ? (
         <div className="w-full h-full relative bg-black flex items-center justify-center overflow-hidden">
-          {/* Blurred backdrop image */}
+          {/* Cover image poster backdrop */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={coverImage}
-            alt=""
-            aria-hidden="true"
+            alt={project.title}
             onError={() => setCoverImage(project.image)}
-            className="absolute inset-0 w-full h-full object-cover scale-150 blur-2xl opacity-30 pointer-events-none"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
-          {/* Sharp Reel video */}
+          {/* Full-frame Reel video */}
           <video
             ref={videoRef}
             src={project.video}
@@ -131,20 +134,9 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
             muted
             playsInline
             preload="metadata"
-            className="relative z-10 h-full aspect-[9/16] object-contain transition-transform duration-700 ease-out group-hover:scale-105"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
         </div>
-      ) : project.video ? (
-        <video
-          ref={videoRef}
-          src={project.video}
-          poster={coverImage}
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-        />
       ) : (
         /* eslint-disable-next-line @next/next/no-img-element */
         <img

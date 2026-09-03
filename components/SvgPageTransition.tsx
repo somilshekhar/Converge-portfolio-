@@ -237,8 +237,13 @@ export function SvgPageTransitionProvider({ children }: { children: React.ReactN
             isOverlayVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
           }`}
         >
-          <div className="h-4 w-4 bg-foreground rounded-sm rotate-45 animate-pulse shadow-2xl" />
-          <span className="font-display font-medium text-xs tracking-widest uppercase text-foreground/90">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/transition-logo.png"
+            alt="Converge Logo"
+            className="h-10 w-auto object-contain animate-pulse drop-shadow-2xl"
+          />
+          <span className="font-display font-medium text-xs tracking-widest uppercase text-white/90 drop-shadow-md">
             CONVERGE DIGITAL
           </span>
         </div>

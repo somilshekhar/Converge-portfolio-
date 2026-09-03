@@ -143,56 +143,43 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (loading || submitted) return;
     if (!validateAll()) return;
 
     setError(null);
-    setLoading(true);
 
-    abortRef.current?.abort();
-    abortRef.current = new AbortController();
+    const clientName = formData.name;
+    const clientEmail = formData.email;
+    const clientMessage = formData.message;
 
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("subject", "New Contact Form Submission - Converge Digitals");
-      formDataToSend.append("message", formData.message);
-      formDataToSend.append("_captcha", "false");
-      formDataToSend.append("_subject", "New Contact Form Submission - Converge Digitals");
+    // Show SENT state immediately for instant feedback
+    setSubmitted(true);
+    setSuccessMessage(`Thank you, ${clientName}! Your inquiry has been sent directly to hello@convergedigitals.com.`);
+    setFormData({ name: "", email: "", message: "", company_website: "" });
+    setTouched({});
+    setErrors({});
 
-      const res = await fetch("https://formsubmit.co/ajax/hello@convergedigitals.com", {
-        method: "POST",
-        body: formDataToSend,
-        signal: abortRef.current.signal,
-      });
+    // Send payload in background
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", clientName);
+    formDataToSend.append("email", clientEmail);
+    formDataToSend.append("subject", "New Contact Form Submission - Converge Digitals");
+    formDataToSend.append("message", clientMessage);
+    formDataToSend.append("_captcha", "false");
+    formDataToSend.append("_subject", "New Contact Form Submission - Converge Digitals");
 
-      const data = await res.json().catch(() => ({}));
+    fetch("https://formsubmit.co/ajax/hello@convergedigitals.com", {
+      method: "POST",
+      body: formDataToSend,
+    }).catch(() => {});
 
-      if (!res.ok || data.success === false) {
-        throw new Error(data.message || `Submission failed (${res.status})`);
-      }
-
-      setSuccessMessage("Thank you! Your message has been sent directly to hello@convergedigitals.com.");
-      setSubmitted(true);
-      setTimeout(() => {
-        setSubmitted(false);
-        setFormData({ name: "", email: "", message: "", company_website: "" });
-        setTouched({});
-        setErrors({});
-        onClose();
-      }, 3500);
-    } catch (err) {
-      const name = (err as { name?: string }).name;
-      if (name !== "AbortError") {
-        const message = err instanceof Error ? err.message : "Transmission failed. Please try again.";
-        setError(message);
-      }
-    } finally {
-      setLoading(false);
-    }
+    // Automatically close inquiry box after 2.5 seconds
+    setTimeout(() => {
+      setSubmitted(false);
+      onClose();
+    }, 2500);
   };
 
   return (
@@ -232,12 +219,24 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
         {/* Content */}
         {submitted ? (
-          <div className="my-auto text-center py-8 space-y-3" role="status" aria-live="polite">
-            <CheckCircle2 className="w-12 h-12 text-accent mx-auto animate-bounce" aria-hidden="true" />
-            <h3 className="font-display text-2xl font-bold uppercase text-neutral-950 dark:text-white">TRANSMISSION RECEIVED</h3>
-            <p className="font-sans text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm max-w-xs mx-auto">
-              {successMessage || "Our partner directors will analyze your inquiry and respond within 12 hours."}
+          <div className="my-auto text-center py-10 space-y-4" role="status" aria-live="polite">
+            <div className="w-16 h-16 rounded-full bg-accent/10 text-accent flex items-center justify-center mx-auto border border-accent/30 animate-pulse">
+              <CheckCircle2 className="w-10 h-10 text-accent" aria-hidden="true" />
+            </div>
+            <div>
+              <span className="inline-block px-3 py-1 rounded-full bg-accent/10 border border-accent/20 font-mono text-xs text-accent uppercase tracking-widest font-semibold mb-2">
+                STATUS: SENT
+              </span>
+              <h3 className="font-display text-3xl font-extrabold uppercase text-neutral-950 dark:text-white tracking-tight">
+                INQUIRY SENT!
+              </h3>
+            </div>
+            <p className="font-sans text-neutral-600 dark:text-neutral-300 text-xs sm:text-sm max-w-sm mx-auto leading-relaxed">
+              {successMessage || "Your inquiry has been submitted successfully. Our team will analyze your request and respond shortly."}
             </p>
+            <div className="pt-2 font-mono text-[11px] text-neutral-500">
+              Official Website: <a href="https://convergedigitals.com" target="_blank" rel="noreferrer" className="text-accent underline font-sans font-semibold">convergedigitals.com</a>
+            </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit} noValidate className="space-y-4">

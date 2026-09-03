@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Globe } from "lucide-react";
 import { usePageTransition } from "./SvgPageTransition";
 
 interface FooterProps {
@@ -29,6 +29,7 @@ export default function Footer({ onOpenContact }: FooterProps) {
   ];
 
   const socialLinks = [
+    { label: "Website", href: "https://convergedigitals.com" },
     { label: "LinkedIn", href: "https://www.linkedin.com/company/converge-digitals/" },
     { label: "X", href: "https://x.com/ConvergeDigit" },
     { label: "Instagram", href: "https://www.instagram.com/convergedigitals" },
@@ -115,8 +116,19 @@ export default function Footer({ onOpenContact }: FooterProps) {
             <p className="font-sans text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-sm">
               We run the full digital growth cycle — website, brand, content, ads, and AI — for ambitious businesses.
             </p>
-            <div className="font-sans text-xs text-neutral-600 dark:text-neutral-400 font-medium">
-              Based in India
+            <div className="font-sans text-xs text-neutral-600 dark:text-neutral-400 font-medium space-y-1">
+              <div>Based in India</div>
+              <div>
+                Main Website:{" "}
+                <a
+                  href="https://convergedigitals.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-accent hover:underline font-semibold"
+                >
+                  convergedigitals.com
+                </a>
+              </div>
             </div>
           </div>
 
@@ -157,7 +169,7 @@ export default function Footer({ onOpenContact }: FooterProps) {
             <h3 className="font-display font-medium text-sm text-neutral-950 dark:text-white tracking-wider uppercase">
               Get in Touch
             </h3>
-            <div className="space-y-4 font-sans text-sm">
+            <div className="space-y-3 font-sans text-sm">
               <a
                 href="mailto:hello@convergedigitals.com"
                 className="text-accent hover:underline font-semibold block"
@@ -165,7 +177,18 @@ export default function Footer({ onOpenContact }: FooterProps) {
                 hello@convergedigitals.com
               </a>
 
-              <div className="flex flex-wrap gap-3 pt-2">
+              <a
+                href="https://convergedigitals.com"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center space-x-2 text-neutral-900 dark:text-white hover:text-accent dark:hover:text-accent font-semibold transition-colors pt-1"
+              >
+                <Globe className="w-4 h-4 text-accent flex-shrink-0" />
+                <span>convergedigitals.com</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 flex-shrink-0" />
+              </a>
+
+              <div className="flex flex-wrap gap-2 pt-2">
                 {socialLinks.map((social) => (
                   <a
                     key={social.label}
@@ -186,9 +209,20 @@ export default function Footer({ onOpenContact }: FooterProps) {
         {/* Footer Signature Banner Section */}
         <div className="pt-8 space-y-4">
           {/* Top Meta Row */}
-          <div className="flex items-center justify-between font-sans text-xs text-neutral-600 dark:text-neutral-400">
+          <div className="flex flex-col sm:flex-row items-center justify-between font-sans text-xs text-neutral-600 dark:text-neutral-400 gap-2">
             <span>© 2026 Converge Digitals. All rights reserved.</span>
-            <span className="font-mono text-xs uppercase tracking-wider">INDIA</span>
+            <div className="flex items-center space-x-3">
+              <a
+                href="https://convergedigitals.com"
+                target="_blank"
+                rel="noreferrer"
+                className="text-accent hover:underline font-semibold"
+              >
+                convergedigitals.com
+              </a>
+              <span>•</span>
+              <span className="font-mono text-xs uppercase tracking-wider">INDIA</span>
+            </div>
           </div>
 
           {/* Giant Orange Stacked CONVERGE / DIGITALS® Display */}
