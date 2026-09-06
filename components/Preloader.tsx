@@ -29,12 +29,13 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
     tl.to(text, {
       y: -50,
       opacity: 0,
-      duration: 0.4,
+      duration: 0.2,
       ease: "power2.in",
     })
       .to(preloader, {
         clipPath: "inset(0% 0% 100% 0%)",
-        duration: 0.9,
+        opacity: 0,
+        duration: 0.3,
         ease: "power4.inOut",
       });
   }, [onComplete]);
@@ -55,24 +56,32 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
       return;
     }
 
-    // Count up 0 to 100
+    // Item 5: Hard Guarantee 800ms safety fallback timer
+    const hardTimeout = setTimeout(() => {
+      sessionStorage.setItem("converge_preloader_seen", "true");
+      setShouldRender(false);
+      if (onComplete) onComplete();
+    }, 800);
+
+    // Fast Count up 0 to 100
     let current = 0;
     const interval = setInterval(() => {
-      current += Math.floor(Math.random() * 8) + 2;
+      current += Math.floor(Math.random() * 25) + 15;
       if (current >= 100) {
         current = 100;
         setCounter(100);
         clearInterval(interval);
         timerRef.current = setTimeout(() => {
           triggerCurtainWipe();
-        }, 300);
+        }, 100);
       } else {
         setCounter(current);
       }
-    }, 40);
+    }, 20);
 
     return () => {
       clearInterval(interval);
+      clearTimeout(hardTimeout);
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, [prefersReduced, onComplete, triggerCurtainWipe]);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -38,8 +38,30 @@ export default function WorkPage() {
 
   // Video control state for the hero showreel banner
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const bannerContainerRef = useRef<HTMLDivElement | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [isMuted, setIsMuted] = useState<boolean>(true);
+
+  // Item 4: IntersectionObserver to auto-pause hero video when scrolled out of view
+  useEffect(() => {
+    const banner = bannerContainerRef.current;
+    if (!banner) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!videoRef.current) return;
+        if (!entry.isIntersecting) {
+          videoRef.current.pause();
+        } else if (isPlaying) {
+          videoRef.current.play().catch(() => {});
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(banner);
+    return () => observer.disconnect();
+  }, [isPlaying]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -152,7 +174,7 @@ export default function WorkPage() {
           </div>
 
           {/* Cinematic Interactive Video Banner */}
-          <div className="relative group w-full h-64 sm:h-80 md:h-[420px] rounded-3xl overflow-hidden border border-white/15 bg-neutral-950 shadow-2xl transition-all duration-700 hover:border-accent/50 dark-bg-context">
+          <div ref={bannerContainerRef} className="relative group w-full h-64 sm:h-80 md:h-[420px] rounded-3xl overflow-hidden border border-white/15 bg-neutral-950 shadow-2xl transition-all duration-700 hover:border-accent/50 dark-bg-context">
             {/* Ambient Background Backlight */}
             <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 via-blue-600/10 to-accent/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 

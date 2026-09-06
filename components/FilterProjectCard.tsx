@@ -15,6 +15,7 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isIntersecting, setIsIntersecting] = useState(false);
 
   // Compute live website screenshot URL for Website & UI/UX Creatives projects
   const liveScreenshotUrl =
@@ -22,11 +23,31 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
       ? `https://s0.wp.com/mshots/v1/${encodeURIComponent(project.link)}?w=1200&h=900`
       : project.image;
 
-  const [coverImage, setCoverImage] = useState(liveScreenshotUrl);
+  // Item 2: Initialize coverImage to project.image fallback. Only load live screenshot when visible in viewport.
+  const [coverImage, setCoverImage] = useState(project.image);
 
+  // IntersectionObserver to track viewport visibility
   useEffect(() => {
-    setCoverImage(liveScreenshotUrl);
-  }, [liveScreenshotUrl]);
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Item 2: Gate live screenshot URL loading behind isIntersecting
+  useEffect(() => {
+    if (isIntersecting && liveScreenshotUrl !== project.image) {
+      setCoverImage(liveScreenshotUrl);
+    }
+  }, [isIntersecting, liveScreenshotUrl, project.image]);
 
   // Slideshow cycle interval logic on desktop hover
   useEffect(() => {
@@ -44,7 +65,7 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
     return () => clearInterval(interval);
   }, [project.slides, isHovered]);
 
-  // Video playback controller (desktop hover & mobile touch)
+  // Item 1: Video playback controller (desktop hover & mobile touch with viewport gating)
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -58,9 +79,13 @@ export default function FilterProjectCard({ project, onClick }: FilterProjectCar
         video.currentTime = 0;
       }
     } else {
-      video.play().catch(() => {});
+      if (isIntersecting) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
     }
-  }, [isHovered]);
+  }, [isHovered, isIntersecting]);
 
   const activeSlide = project.slides && project.slides.length > 0 ? project.slides[currentSlide] : null;
   const isVideoSlide = activeSlide ? (activeSlide.toLowerCase().endsWith(".mp4") || activeSlide.toLowerCase().endsWith(".mov")) : false;

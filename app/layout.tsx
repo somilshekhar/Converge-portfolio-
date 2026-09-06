@@ -39,10 +39,11 @@ const themeScript = `
 `;
 
 export const metadata: Metadata = {
-  title: "Converge Digitals® — Full-Cycle Digital Growth Company",
+  title: "Converge Digitals® — APAC Insider Global Business Awards 2026 Nominee",
   description:
-    "We run the full digital growth cycle for ambitious brands — website, brand, content, ads, and AI automation.",
+    "APAC Insider Global Business Awards 2026 Nominee. We run the full digital growth cycle for ambitious brands — website, brand, content, ads, and AI automation.",
   keywords: [
+    "APAC Insider Global Business Awards 2026 Nominee",
     "Converge Digitals",
     "Full-Cycle Digital Company",
     "Web Development",
@@ -63,9 +64,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Converge Digitals Team" }],
   creator: "Converge Digitals",
   openGraph: {
-    title: "Converge Digitals® — Full-Cycle Digital Growth Company",
+    title: "Converge Digitals® — APAC Insider Global Business Awards 2026 Nominee",
     description:
-      "We run the full digital growth cycle for ambitious brands — website, brand, content, ads, and AI automation.",
+      "APAC Insider Global Business Awards 2026 Nominee. We run the full digital growth cycle for ambitious brands — website, brand, content, ads, and AI automation.",
     url: "https://convergedigitals.com",
     siteName: "Converge Digitals",
     locale: "en_US",
@@ -81,9 +82,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Converge Digitals® — Full-Cycle Digital Growth Company",
+    title: "Converge Digitals® — APAC Insider Global Business Awards 2026 Nominee",
     description:
-      "We run the full digital growth cycle for ambitious brands — website, brand, content, ads, and AI automation.",
+      "APAC Insider Global Business Awards 2026 Nominee. We run the full digital growth cycle for ambitious brands — website, brand, content, ads, and AI automation.",
     images: [
       "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop",
     ],
@@ -105,7 +106,8 @@ const jsonLd = {
   name: "Converge Digitals",
   url: "https://convergedigitals.com",
   description:
-    "We craft high-performing digital experiences that elevate brands and drive measurable growth. Branding, Web Design, AI & Development.",
+    "APAC Insider Global Business Awards 2026 Nominee. We craft high-performing digital experiences that elevate brands and drive measurable growth. Branding, Web Design, AI & Development.",
+  award: "APAC Insider Global Business Awards 2026 Nominee",
   address: {
     "@type": "PostalAddress",
     addressCountry: "IN",

@@ -53,11 +53,27 @@ export default function LightboxModal({
   }, [slides.length]);
 
   const closeModal = useCallback(() => {
+    if (typeof window !== "undefined" && window.location.hash.startsWith("#project-")) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
     onClose();
   }, [onClose]);
 
   useEffect(() => {
     if (!project) return;
+
+    // Item 3: Sync Browser History State (Push modal state & hash anchor)
+    const hashId = `#project-${project.id}`;
+    if (typeof window !== "undefined" && window.location.hash !== hashId) {
+      window.history.pushState({ modalOpen: true, projectId: project.id }, "", hashId);
+    }
+
+    const handlePopState = () => {
+      // Cleanly close modal when phone Back button is pressed
+      onClose();
+    };
+
+    window.addEventListener("popstate", handlePopState);
 
     lastFocusedRef.current = document.activeElement as HTMLElement | null;
 
@@ -89,12 +105,13 @@ export default function LightboxModal({
     closeButtonRef.current?.focus();
 
     return () => {
+      window.removeEventListener("popstate", handlePopState);
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
       lenis?.start();
       lastFocusedRef.current?.focus?.();
     };
-  }, [project, handlePrev, handleNext, closeModal]);
+  }, [project, handlePrev, handleNext, closeModal, onClose]);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
